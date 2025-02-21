@@ -25,8 +25,9 @@ func main() {
 	query := "windy London"
 	tokenizedQuery := strings.Fields(query)
 
-	// Compute BM25
-	bm25Result := bm25.BM25OkapiCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2)
+	// Compute BM25 Methods
+	// bm25Result := bm25.BM25OkapiCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2)
+	bm25Result := bm25.BM25LCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2, 0.5)
 
 	// Retrieve the highest-ranked document
 	topDocIndex := bm25Result.TopN[0]
