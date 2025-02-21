@@ -27,7 +27,8 @@ func main() {
 
 	// Compute BM25 Methods
 	// bm25Result := bm25.BM25OkapiCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2)
-	bm25Result := bm25.BM25LCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2, 0.5)
+	// bm25Result := bm25.BM25LCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2, 0.5)
+	bm25Result := bm25.BM25PlusCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2, 0.5)
 
 	// Retrieve the highest-ranked document
 	topDocIndex := bm25Result.TopN[0]
