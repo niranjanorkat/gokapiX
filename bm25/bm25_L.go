@@ -10,7 +10,7 @@ func BM25LCompute(query []string, corpus [][]string, b float64, k1 float64, delt
 	var totalDocs = len(corpus)
 	var avgDocLength = getAvgDocLength(corpus)
 
-	bm25Okapi := BM25Result{
+	bm25Result := BM25Result{
 		TopN:      make([]int, 0, len(corpus)),
 		TopScores: make([]float64, 0, len(corpus)),
 	}
@@ -27,13 +27,13 @@ func BM25LCompute(query []string, corpus [][]string, b float64, k1 float64, delt
 			retrievalVal += logTerm * (numeratorTerm / denominatorTerm)
 
 		}
-		bm25Okapi.TopScores = append(bm25Okapi.TopScores, retrievalVal)
-		bm25Okapi.TopN = append(bm25Okapi.TopN, i)
+		bm25Result.TopScores = append(bm25Result.TopScores, retrievalVal)
+		bm25Result.TopN = append(bm25Result.TopN, i)
 	}
 
-	sort.SliceStable(bm25Okapi.TopN, func(i, j int) bool {
-		return bm25Okapi.TopScores[bm25Okapi.TopN[i]] > bm25Okapi.TopScores[bm25Okapi.TopN[j]]
+	sort.SliceStable(bm25Result.TopN, func(i, j int) bool {
+		return bm25Result.TopScores[bm25Result.TopN[i]] > bm25Result.TopScores[bm25Result.TopN[j]]
 	})
 
-	return bm25Okapi
+	return bm25Result
 }

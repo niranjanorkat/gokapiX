@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func BM25OkapiCompute(query []string, corpus [][]string, b float64, k1 float64) BM25Result {
+func BM25PlusCompute(query []string, corpus [][]string, b float64, k1 float64, delta float64) BM25Result {
 	var docTermFrequency = getDocTermFreq(query, corpus)
 	var totalDocs = len(corpus)
 	var avgDocLength = getAvgDocLength(corpus)
@@ -19,11 +19,11 @@ func BM25OkapiCompute(query []string, corpus [][]string, b float64, k1 float64) 
 		for j, term := range query {
 			termFreqInDoc := CountOccurrences(term, doc)
 
-			logTerm := math.Log(float64(totalDocs) / float64(docTermFrequency[j]))
+			logTerm := math.Log((float64(totalDocs) + 1) / float64(docTermFrequency[j]))
 			numeratorTerm := (k1 + 1) * float64(termFreqInDoc)
 			denominatorTerm := k1*(1-b+b*float64((len(doc)/avgDocLength))) + float64(termFreqInDoc)
 
-			retrievalVal += logTerm * (numeratorTerm / denominatorTerm)
+			retrievalVal += logTerm * ((numeratorTerm / denominatorTerm) + delta)
 
 		}
 		bm25Result.TopScores = append(bm25Result.TopScores, retrievalVal)
