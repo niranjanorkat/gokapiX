@@ -12,7 +12,7 @@ type BM25Okapi struct {
 	TopScores []float64
 }
 
-func Compute(query []string, corpus [][]string, b float64, k1 float64) BM25Okapi {
+func BM25OkapiCompute(query []string, corpus [][]string, b float64, k1 float64) BM25Okapi {
 	// Assuming query and corpus is received tokenized.
 
 	docTermFrequency := make([]int, len(query))

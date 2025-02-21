@@ -15,7 +15,7 @@ func main() {
 		"How is the weather today?",
 	}
 
-	// Tokenize corpus (similar to Python's .split(" "))
+	// Tokenize corpus
 	tokenizedCorpus := make([][]string, len(corpus))
 	for i, doc := range corpus {
 		tokenizedCorpus[i] = strings.Fields(doc)
@@ -26,7 +26,7 @@ func main() {
 	tokenizedQuery := strings.Fields(query)
 
 	// Compute BM25
-	bm25Result := bm25.Compute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2)
+	bm25Result := bm25.BM25OkapiCompute(tokenizedQuery, tokenizedCorpus, 0.75, 1.2)
 
 	// Retrieve the highest-ranked document
 	topDocIndex := bm25Result.TopN[0]
