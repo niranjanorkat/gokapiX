@@ -3,7 +3,6 @@ package bm25
 import (
 	"fmt"
 	"math"
-	"sort"
 
 	"gonum.org/v1/gonum/optimize"
 )
@@ -33,9 +32,7 @@ func AdptQuery(query []string, bm25Model BM25AdptModel) BM25AdptModel {
 		bm25Model.TopN = append(bm25Model.TopN, i)
 	}
 
-	sort.SliceStable(bm25Model.TopN, func(i, j int) bool {
-		return bm25Model.TopScores[bm25Model.TopN[i]] > bm25Model.TopScores[bm25Model.TopN[j]]
-	})
+	SortTopResults(bm25Model.TopN, bm25Model.TopScores)
 
 	return bm25Model
 }

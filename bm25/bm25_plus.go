@@ -2,7 +2,6 @@ package bm25
 
 import (
 	"math"
-	"sort"
 )
 
 func PlusQuery(query []string, bm25Model BM25LModel) BM25LModel {
@@ -31,9 +30,7 @@ func PlusQuery(query []string, bm25Model BM25LModel) BM25LModel {
 		bm25Model.TopN = append(bm25Model.TopN, i)
 	}
 
-	sort.SliceStable(bm25Model.TopN, func(i, j int) bool {
-		return bm25Model.TopScores[bm25Model.TopN[i]] > bm25Model.TopScores[bm25Model.TopN[j]]
-	})
+	SortTopResults(bm25Model.TopN, bm25Model.TopScores)
 
 	return bm25Model
 }

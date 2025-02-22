@@ -3,7 +3,6 @@ package bm25
 import (
 	"fmt"
 	"math"
-	"sort"
 
 	"gonum.org/v1/gonum/optimize"
 )
@@ -34,9 +33,7 @@ func TQuery(query []string, bm25Model BM25TModel) BM25TModel {
 		bm25Model.TopN = append(bm25Model.TopN, i)
 	}
 
-	sort.SliceStable(bm25Model.TopN, func(i, j int) bool {
-		return bm25Model.TopScores[bm25Model.TopN[i]] > bm25Model.TopScores[bm25Model.TopN[j]]
-	})
+	SortTopResults(bm25Model.TopN, bm25Model.TopScores)
 
 	return bm25Model
 }
@@ -46,8 +43,6 @@ func computeTermK1(bm25TModel BM25TModel) BM25TModel {
 	for term := range bm25TModel.DocFreq {
 		terms = append(terms, term)
 	}
-
-	corpusSize := len(bm25TModel.Corpus)
 
 	for _, term := range terms {
 		ctdValues := []float64{}
@@ -61,13 +56,13 @@ func computeTermK1(bm25TModel BM25TModel) BM25TModel {
 			ctdValues = append(ctdValues, ctd)
 		}
 
-		k1 := optimizeK1T(corpusSize, bm25TModel.DocFreq[term], ctdValues)
+		k1 := optimizeK1T(bm25TModel.DocFreq[term], ctdValues)
 		bm25TModel.TermK1[term] = k1
 	}
 	return bm25TModel
 }
 
-func optimizeK1T(corpusSize int, docFreq int, ctdValues []float64, initGuess ...float64) float64 {
+func optimizeK1T(docFreq int, ctdValues []float64, initGuess ...float64) float64 {
 	k1 := 1.5
 	if len(initGuess) > 0 {
 		k1 = initGuess[0]
