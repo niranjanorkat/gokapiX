@@ -4,7 +4,7 @@ import (
 	"math"
 )
 
-func OkapiQuery(query []string, bm25Model BM25Model) BM25Model {
+func AtireQuery(query []string, bm25Model BM25Model) BM25Model {
 	corpus := bm25Model.Corpus
 	var totalDocs = len(corpus)
 

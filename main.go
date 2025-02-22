@@ -27,29 +27,39 @@ func main() {
 
 	// Compute BM25 Methods
 
-	// BM25
-	//bm25Model := bm25.BM25Init(tokenizedCorpus, 0.75, 1.2)
-	//bm25Result := bm25.OkapiQuery(tokenizedQuery, bm25Model)
+	fmt.Println("\n===== BM25 =====")
+	bm25Model := bm25.BM25Init(tokenizedCorpus, 0.75, 1.2)
+	bm25Result := bm25.AtireQuery(tokenizedQuery, bm25Model)
+	printTopResult(query, corpus, bm25Result.TopN)
 
-	// BM25 L
-	//bm25Model := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
-	//bm25Result := bm25.LQuery(tokenizedQuery, bm25Model)
+	fmt.Println("\n===== BM25L =====")
+	bm25LModel := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
+	bm25LResult := bm25.LQuery(tokenizedQuery, bm25LModel)
+	printTopResult(query, corpus, bm25LResult.TopN)
 
-	// BM25 Plus
-	bm25Model := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
-	bm25Result := bm25.PlusQuery(tokenizedQuery, bm25Model)
+	fmt.Println("\n===== BM25+ =====")
+	bm25PlusModel := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
+	bm25PlusResult := bm25.PlusQuery(tokenizedQuery, bm25PlusModel)
+	printTopResult(query, corpus, bm25PlusResult.TopN)
 
-	// BM25 Adpt
-	// bm25Model := bm25.BM25AdptInit(tokenizedCorpus, 0.75, 1.2)
-	// bm25Result := bm25.AdptQuery(tokenizedQuery, bm25Model)
+	fmt.Println("\n===== BM25-adpt =====")
+	bm25AdptModel := bm25.BM25AdptInit(tokenizedCorpus, 0.75, 1.2)
+	bm25AdptResult := bm25.AdptQuery(tokenizedQuery, bm25AdptModel)
+	printTopResult(query, corpus, bm25AdptResult.TopN)
 
-	// BM25 Adpt
-	//bm25Model := bm25.BM25TInit(tokenizedCorpus, 0.75, 1.2)
-	//bm25Result := bm25.TQuery(tokenizedQuery, bm25Model)
-	// Retrieve the highest-ranked document
-	topDocIndex := bm25Result.TopN[0]
+	fmt.Println("\n===== BM25T =====")
+	bm25TModel := bm25.BM25TInit(tokenizedCorpus, 0.75, 1.2)
+	bm25TResult := bm25.TQuery(tokenizedQuery, bm25TModel)
+	printTopResult(query, corpus, bm25TResult.TopN)
+}
+
+func printTopResult(query string, corpus []string, topN []int) {
+	if len(topN) == 0 {
+		fmt.Println("No results found.")
+		return
+	}
+	topDocIndex := topN[0]
 	topDoc := corpus[topDocIndex]
-
 	fmt.Println("Query:", query)
 	fmt.Println("Top-ranked document:", topDoc)
 }
