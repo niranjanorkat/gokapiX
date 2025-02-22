@@ -1,4 +1,4 @@
-module github.com/niranjankrishna-acad/gokapiX
+module github.com/niranjanorkat/gokapiX
 
 go 1.23.5
 
