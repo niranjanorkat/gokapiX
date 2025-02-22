@@ -13,4 +13,10 @@ Algorithms implemented:
 - BM25L
 - BM25+
 - BM25-Adpt
-- BM25T 
+- BM25T
+
+## Installation
+To install **gokapiX**, use:
+
+```sh
+go get github.com/niranjanorkat/gokapiX
