@@ -28,22 +28,24 @@ func main() {
 	// Compute BM25 Methods
 
 	// BM25
-	// bm25Result := bm25.OkapiQuery(tokenizedQuery, bm25Model)
-	// bm25Result := bm25.LQuery(tokenizedQuery, bm25Model
+	//bm25Model := bm25.BM25Init(tokenizedCorpus, 0.75, 1.2)
+	//bm25Result := bm25.OkapiQuery(tokenizedQuery, bm25Model)
 
 	// BM25 L
+	//bm25Model := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
+	//bm25Result := bm25.LQuery(tokenizedQuery, bm25Model)
 
 	// BM25 Plus
-	//bm25Model := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
-	//bm25Result := bm25.PlusQuery(tokenizedQuery, bm25Model)
+	bm25Model := bm25.BM25LInit(tokenizedCorpus, 0.75, 1.2, 0.5)
+	bm25Result := bm25.PlusQuery(tokenizedQuery, bm25Model)
 
 	// BM25 Adpt
 	// bm25Model := bm25.BM25AdptInit(tokenizedCorpus, 0.75, 1.2)
 	// bm25Result := bm25.AdptQuery(tokenizedQuery, bm25Model)
 
 	// BM25 Adpt
-	bm25Model := bm25.BM25TInit(tokenizedCorpus, 0.75, 1.2)
-	bm25Result := bm25.TQuery(tokenizedQuery, bm25Model)
+	//bm25Model := bm25.BM25TInit(tokenizedCorpus, 0.75, 1.2)
+	//bm25Result := bm25.TQuery(tokenizedQuery, bm25Model)
 	// Retrieve the highest-ranked document
 	topDocIndex := bm25Result.TopN[0]
 	topDoc := corpus[topDocIndex]
