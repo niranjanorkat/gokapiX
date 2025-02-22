@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/niranjankrishna-acad/gokapiX/bm25"
+	"github.com/niranjanorkat/gokapiX/bm25"
 )
 
 func main() {
