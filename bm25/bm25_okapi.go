@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func OkapiQuery(query []string, bm25Model BM25Model, b float64, k1 float64) BM25Model {
+func OkapiQuery(query []string, bm25Model BM25Model) BM25Model {
 	corpus := bm25Model.Corpus
 	var totalDocs = len(corpus)
 
@@ -18,8 +18,8 @@ func OkapiQuery(query []string, bm25Model BM25Model, b float64, k1 float64) BM25
 			termFreqInDoc := bm25Model.TermFreqInDoc[i][term]
 
 			logTerm := math.Log(float64(totalDocs) / float64(bm25Model.DocFreq[term]))
-			numeratorTerm := (k1 + 1) * float64(termFreqInDoc)
-			denominatorTerm := k1*(1-b+b*(float64(len(doc))/bm25Model.AvgDocLen)) + float64(termFreqInDoc)
+			numeratorTerm := (bm25Model.K1 + 1) * float64(termFreqInDoc)
+			denominatorTerm := bm25Model.K1*(1-bm25Model.B+bm25Model.B*(float64(len(doc))/bm25Model.AvgDocLen)) + float64(termFreqInDoc)
 
 			retrievalVal += logTerm * (numeratorTerm / denominatorTerm)
 

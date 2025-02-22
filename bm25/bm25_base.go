@@ -1,6 +1,6 @@
 package bm25
 
-func BM25Init(corpus [][]string) BM25Model {
+func BM25Init(corpus [][]string, b float64, k1 float64) BM25Model {
 	totalDocs := len(corpus)
 	docFreq := make(map[string]int)
 	termFreqInDoc := make([]map[string]int, totalDocs)
