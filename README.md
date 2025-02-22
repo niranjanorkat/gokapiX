@@ -8,15 +8,9 @@ An implementation of BM25 variants surveyed in *"Improvements to BM25 and Langua
 
 Name Credits: [gokapi](https://github.com/raphaelsty/gokapi)
 
-Algorithms implemented - 
+Algorithms implemented:
 - Atire BM25
 - BM25L
 - BM25+
 - BM25-Adpt
 - BM25T 
-
-## To Do
-- [x] Rename Okapi to Atire
-- [x] Decompose to multiple fnctions
-- [ ] Make it a package
-- [ ] Write an example.py
