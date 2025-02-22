@@ -15,6 +15,9 @@ func PlusQuery(query []string, bm25Model BM25LModel) BM25LModel {
 	for i, doc := range corpus {
 		var retrievalVal float64 = 0
 		for _, term := range query {
+			if _, exists := bm25Model.TermFreqInDoc[i][term]; !exists {
+				continue
+			}
 			termFreqInDoc := bm25Model.TermFreqInDoc[i][term]
 
 			logTerm := math.Log((float64(totalDocs) + 1) / float64(bm25Model.DocFreq[term]))

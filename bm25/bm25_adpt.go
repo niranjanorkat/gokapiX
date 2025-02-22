@@ -18,6 +18,9 @@ func AdptQuery(query []string, bm25Model BM25AdptModel) BM25AdptModel {
 	for i, doc := range corpus {
 		var retrievalVal float64 = 0
 		for _, term := range query {
+			if _, exists := bm25Model.TermFreqInDoc[i][term]; !exists {
+				continue
+			}
 			termFreqInDoc := bm25Model.TermFreqInDoc[i][term]
 
 			numeratorTerm := (bm25Model.TermK1[term] + 1) * float64(termFreqInDoc)
