@@ -38,9 +38,12 @@ func main() {
 	//bm25Result := bm25.PlusQuery(tokenizedQuery, bm25Model)
 
 	// BM25 Adpt
-	bm25Model := bm25.BM25AdptInit(tokenizedCorpus, 0.75, 1.2)
-	bm25Result := bm25.AdptQuery(tokenizedQuery, bm25Model)
+	// bm25Model := bm25.BM25AdptInit(tokenizedCorpus, 0.75, 1.2)
+	// bm25Result := bm25.AdptQuery(tokenizedQuery, bm25Model)
 
+	// BM25 Adpt
+	bm25Model := bm25.BM25TInit(tokenizedCorpus, 0.75, 1.2)
+	bm25Result := bm25.TQuery(tokenizedQuery, bm25Model)
 	// Retrieve the highest-ranked document
 	topDocIndex := bm25Result.TopN[0]
 	topDoc := corpus[topDocIndex]
