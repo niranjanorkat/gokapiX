@@ -37,7 +37,7 @@ func AdptQuery(query []string, bm25Model BM25AdptModel) BM25AdptModel {
 	return bm25Model
 }
 
-func computeTermK1Adpt(bm25AdptModel BM25AdptModel) BM25AdptModel {
+func computeTermK1Adpt(bm25AdptModel *BM25AdptModel) {
 	var terms []string
 	for term := range bm25AdptModel.DocFreq {
 		terms = append(terms, term)
@@ -97,7 +97,6 @@ func computeTermK1Adpt(bm25AdptModel BM25AdptModel) BM25AdptModel {
 		k1 := optimizeK1Adpt(gqrs, bm25AdptModel.G1Q[term], uniqueTermFreqSlice)
 		bm25AdptModel.TermK1[term] = k1
 	}
-	return bm25AdptModel
 }
 
 func optimizeK1Adpt(GqR []float64, Gq float64, rValues []int, initGuess ...float64) float64 {
