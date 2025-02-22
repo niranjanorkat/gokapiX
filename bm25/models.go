@@ -18,5 +18,6 @@ type BM25LModel struct {
 
 type BM25AdptModel struct {
 	BM25Model
+	G1Q    map[string]float64
 	TermK1 map[string]float64
 }

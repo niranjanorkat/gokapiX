@@ -27,5 +27,7 @@ func BM25Init(corpus [][]string, b float64, k1 float64) BM25Model {
 		AvgDocLen:     avgDocLen,
 		TopN:          make([]int, 0, totalDocs),
 		TopScores:     make([]float64, 0, totalDocs),
+		B:             b,
+		K1:            k1,
 	}
 }

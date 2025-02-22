@@ -8,7 +8,7 @@ import (
 	"gonum.org/v1/gonum/optimize"
 )
 
-func AdptQuery(query []string, bm25Model BM25Model) BM25Model {
+func AdptQuery(query []string, bm25Model BM25AdptModel) BM25AdptModel {
 	corpus := bm25Model.Corpus
 	var totalDocs = len(corpus)
 
@@ -20,11 +20,10 @@ func AdptQuery(query []string, bm25Model BM25Model) BM25Model {
 		for _, term := range query {
 			termFreqInDoc := bm25Model.TermFreqInDoc[i][term]
 
-			logTerm := math.Log(float64(totalDocs) / float64(bm25Model.DocFreq[term]))
-			numeratorTerm := (bm25Model.K1 + 1) * float64(termFreqInDoc)
-			denominatorTerm := bm25Model.K1*(1-bm25Model.B+bm25Model.B*(float64(len(doc))/bm25Model.AvgDocLen)) + float64(termFreqInDoc)
+			numeratorTerm := (bm25Model.TermK1[term] + 1) * float64(termFreqInDoc)
+			denominatorTerm := bm25Model.TermK1[term]*(1-bm25Model.B+bm25Model.B*(float64(len(doc))/bm25Model.AvgDocLen)) + float64(termFreqInDoc)
 
-			retrievalVal += logTerm * (numeratorTerm / denominatorTerm)
+			retrievalVal += bm25Model.G1Q[term] * (numeratorTerm / denominatorTerm)
 
 		}
 		bm25Model.TopScores = append(bm25Model.TopScores, retrievalVal)
@@ -44,7 +43,10 @@ func BM25AdptInit(corpus [][]string, b float64, k1 float64) BM25AdptModel {
 	bm25AdptModel := BM25AdptModel{
 		BM25Model: bm25Model,
 		TermK1:    make(map[string]float64),
+		G1Q:       make(map[string]float64),
 	}
+
+	bm25AdptModel = ComputeTermK1(bm25AdptModel)
 
 	return bm25AdptModel
 }
@@ -58,7 +60,7 @@ func ComputeTermK1(bm25AdptModel BM25AdptModel) BM25AdptModel {
 	corpusSize := len(bm25AdptModel.Corpus)
 
 	for _, term := range terms {
-		uniqueTermFreq := map[int]struct{}{}
+		uniqueTermFreq := map[int]struct{}{0: {}}
 		for _, doc := range bm25AdptModel.TermFreqInDoc {
 			if freq, exists := doc[term]; exists {
 				uniqueTermFreq[freq] = struct{}{}
@@ -70,7 +72,8 @@ func ComputeTermK1(bm25AdptModel BM25AdptModel) BM25AdptModel {
 			uniqueTermFreqSlice = append(uniqueTermFreqSlice, freq)
 		}
 
-		grq := make([]float64, 0)
+		gqrs := make([]float64, 0)
+
 		for _, numOccurrences := range uniqueTermFreqSlice {
 			var dfr int
 
@@ -91,12 +94,27 @@ func ComputeTermK1(bm25AdptModel BM25AdptModel) BM25AdptModel {
 				dfr = nDT
 			}
 
-			grq = append(grq, float64(dfr))
+			df_r1 := float64(dfr) + 0.5
+			df_r := float64(dfr) + 1
+			gqr := math.Log2(df_r1/df_r) - math.Log2((df_r1-0.5)/(float64(corpusSize)+1))
+
+			gqrs = append(gqrs, gqr)
+
 		}
+		if len(gqrs) > 1 {
+			bm25AdptModel.G1Q[term] = gqrs[1]
+		} else {
+			bm25AdptModel.G1Q[term] = 0
+		}
+
+		bm25AdptModel.G1Q[term] = gqrs[1]
+		k1 := OptimizeK1(gqrs, bm25AdptModel.G1Q[term], uniqueTermFreqSlice)
+		bm25AdptModel.TermK1[term] = k1
 	}
+	return bm25AdptModel
 }
 
-func OptimizeK1(GqR []float64, Gq float64, rValues []float64, initGuess ...float64) float64 {
+func OptimizeK1(GqR []float64, Gq float64, rValues []int, initGuess ...float64) float64 {
 	k1 := 1.5
 	if len(initGuess) > 0 {
 		k1 = initGuess[0]
@@ -106,7 +124,7 @@ func OptimizeK1(GqR []float64, Gq float64, rValues []float64, initGuess ...float
 		k1 := x[0]
 		var sum float64
 		for i, r := range rValues {
-			bm25Term := ((k1 + 1) * r) / (k1 + r)
+			bm25Term := ((k1 + 1) * float64(r)) / (k1 + float64(r))
 			infoGainRatio := GqR[i] / Gq
 			diff := infoGainRatio - bm25Term
 			sum += diff * diff
