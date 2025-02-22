@@ -8,14 +8,9 @@ An implementation of BM25 variants surveyed in *"Improvements to BM25 and Langua
 
 Name Credits: [gokapi](https://github.com/raphaelsty/gokapi)
 
-Algorithms implemented - 
-- Okapi BM25
+Algorithms implemented:
+- Atire BM25
 - BM25L
 - BM25+
 - BM25-Adpt
 - BM25T 
-
-## To Do
-- [ ] Verfiy algorithms
-- [ ] Edge case: term doesn't exist
-- [ ] Remove k1 from Adpt and T Models
