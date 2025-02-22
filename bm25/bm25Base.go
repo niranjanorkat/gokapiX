@@ -63,7 +63,7 @@ func BM25AdptInit(corpus [][]string, b float64, k1 float64) BM25AdptModel {
 		G1Q:      make(map[string]float64),
 	}
 
-	bm25AdptModel = computeTermK1Adpt(bm25AdptModel)
+	computeTermK1Adpt(&bm25AdptModel)
 
 	return bm25AdptModel
 }
@@ -76,7 +76,7 @@ func BM25TInit(corpus [][]string, b float64, k1 float64) BM25TModel {
 		TermK1:   make(map[string]float64),
 	}
 
-	bm25TModel = computeTermK1(bm25TModel)
+	computeTermK1T(&bm25TModel)
 
 	return bm25TModel
 }

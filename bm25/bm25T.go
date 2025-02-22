@@ -38,7 +38,7 @@ func TQuery(query []string, bm25Model BM25TModel) BM25TModel {
 	return bm25Model
 }
 
-func computeTermK1(bm25TModel BM25TModel) BM25TModel {
+func computeTermK1T(bm25TModel *BM25TModel) {
 	var terms []string
 	for term := range bm25TModel.DocFreq {
 		terms = append(terms, term)
@@ -59,7 +59,6 @@ func computeTermK1(bm25TModel BM25TModel) BM25TModel {
 		k1 := optimizeK1T(bm25TModel.DocFreq[term], ctdValues)
 		bm25TModel.TermK1[term] = k1
 	}
-	return bm25TModel
 }
 
 func optimizeK1T(docFreq int, ctdValues []float64, initGuess ...float64) float64 {
