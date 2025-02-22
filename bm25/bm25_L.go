@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func LCompute(query []string, bm25Model BM25Model, b float64, k1 float64, delta float64) BM25Model {
+func LQuery(query []string, bm25Model BM25Model, b float64, k1 float64, delta float64) BM25Model {
 	corpus := bm25Model.Corpus
 	var totalDocs = len(corpus)
 
