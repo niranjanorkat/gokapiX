@@ -5,3 +5,7 @@
 - [x] BM25+
 - [x] BM25-Adpt
 - [ ] BM25T 
+
+- [ ] Verfiy algorithms
+- [ ] Edge case: term doesn't exist
+- [ ] Remove k1 from Adpt and T Models

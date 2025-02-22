@@ -46,12 +46,12 @@ func BM25AdptInit(corpus [][]string, b float64, k1 float64) BM25AdptModel {
 		G1Q:       make(map[string]float64),
 	}
 
-	bm25AdptModel = ComputeTermK1(bm25AdptModel)
+	bm25AdptModel = computeTermK1Adpt(bm25AdptModel)
 
 	return bm25AdptModel
 }
 
-func ComputeTermK1(bm25AdptModel BM25AdptModel) BM25AdptModel {
+func computeTermK1Adpt(bm25AdptModel BM25AdptModel) BM25AdptModel {
 	var terms []string
 	for term := range bm25AdptModel.DocFreq {
 		terms = append(terms, term)
@@ -108,13 +108,13 @@ func ComputeTermK1(bm25AdptModel BM25AdptModel) BM25AdptModel {
 		}
 
 		bm25AdptModel.G1Q[term] = gqrs[1]
-		k1 := OptimizeK1(gqrs, bm25AdptModel.G1Q[term], uniqueTermFreqSlice)
+		k1 := optimizeK1Adpt(gqrs, bm25AdptModel.G1Q[term], uniqueTermFreqSlice)
 		bm25AdptModel.TermK1[term] = k1
 	}
 	return bm25AdptModel
 }
 
-func OptimizeK1(GqR []float64, Gq float64, rValues []int, initGuess ...float64) float64 {
+func optimizeK1Adpt(GqR []float64, Gq float64, rValues []int, initGuess ...float64) float64 {
 	k1 := 1.5
 	if len(initGuess) > 0 {
 		k1 = initGuess[0]
