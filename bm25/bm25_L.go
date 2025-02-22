@@ -35,14 +35,3 @@ func LQuery(query []string, bm25Model BM25LModel) BM25LModel {
 
 	return bm25Model
 }
-
-func BM25LInit(corpus [][]string, b float64, k1 float64, delta float64) BM25LModel {
-	bm25Model := BM25Init(corpus, b, k1)
-
-	bm25LModel := BM25LModel{
-		BM25Model: bm25Model,
-		Delta:     delta,
-	}
-
-	return bm25LModel
-}

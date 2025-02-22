@@ -37,20 +37,6 @@ func AdptQuery(query []string, bm25Model BM25AdptModel) BM25AdptModel {
 	return bm25Model
 }
 
-func BM25AdptInit(corpus [][]string, b float64, k1 float64) BM25AdptModel {
-	bm25Model := BM25Init(corpus, b, k1)
-
-	bm25AdptModel := BM25AdptModel{
-		BM25Model: bm25Model,
-		TermK1:    make(map[string]float64),
-		G1Q:       make(map[string]float64),
-	}
-
-	bm25AdptModel = computeTermK1Adpt(bm25AdptModel)
-
-	return bm25AdptModel
-}
-
 func computeTermK1Adpt(bm25AdptModel BM25AdptModel) BM25AdptModel {
 	var terms []string
 	for term := range bm25AdptModel.DocFreq {

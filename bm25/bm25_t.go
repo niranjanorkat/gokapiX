@@ -38,19 +38,6 @@ func TQuery(query []string, bm25Model BM25TModel) BM25TModel {
 	return bm25Model
 }
 
-func BM25TInit(corpus [][]string, b float64, k1 float64) BM25TModel {
-	bm25Model := BM25Init(corpus, b, k1)
-
-	bm25TModel := BM25TModel{
-		BM25Model: bm25Model,
-		TermK1:    make(map[string]float64),
-	}
-
-	bm25TModel = computeTermK1(bm25TModel)
-
-	return bm25TModel
-}
-
 func computeTermK1(bm25TModel BM25TModel) BM25TModel {
 	var terms []string
 	for term := range bm25TModel.DocFreq {
@@ -71,13 +58,13 @@ func computeTermK1(bm25TModel BM25TModel) BM25TModel {
 			ctdValues = append(ctdValues, ctd)
 		}
 
-		k1 := OptimizeK1T(corpusSize, bm25TModel.DocFreq[term], ctdValues)
+		k1 := optimizeK1T(corpusSize, bm25TModel.DocFreq[term], ctdValues)
 		bm25TModel.TermK1[term] = k1
 	}
 	return bm25TModel
 }
 
-func OptimizeK1T(corpusSize int, docFreq int, ctdValues []float64, initGuess ...float64) float64 {
+func optimizeK1T(corpusSize int, docFreq int, ctdValues []float64, initGuess ...float64) float64 {
 	k1 := 1.5
 	if len(initGuess) > 0 {
 		k1 = initGuess[0]
