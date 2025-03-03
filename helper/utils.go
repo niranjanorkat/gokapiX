@@ -1,4 +1,4 @@
-package bm25
+package helper
 
 import "sort"
 

@@ -2,6 +2,8 @@ package bm25
 
 import (
 	"math"
+
+	"github.com/niranjanorkat/gokapiX/helper"
 )
 
 func AtireQuery(query []string, bm25Model BM25Model) BM25Model {
@@ -30,7 +32,7 @@ func AtireQuery(query []string, bm25Model BM25Model) BM25Model {
 		bm25Model.TopN = append(bm25Model.TopN, i)
 	}
 
-	SortTopResults(bm25Model.TopN, bm25Model.TopScores)
+	helper.SortTopResults(bm25Model.TopN, bm25Model.TopScores)
 
 	return bm25Model
 }

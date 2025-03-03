@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 
+	"github.com/niranjanorkat/gokapiX/helper"
 	"gonum.org/v1/gonum/optimize"
 )
 
@@ -32,7 +33,7 @@ func AdptQuery(query []string, bm25Model BM25AdptModel) BM25AdptModel {
 		bm25Model.TopN = append(bm25Model.TopN, i)
 	}
 
-	SortTopResults(bm25Model.TopN, bm25Model.TopScores)
+	helper.SortTopResults(bm25Model.TopN, bm25Model.TopScores)
 
 	return bm25Model
 }
